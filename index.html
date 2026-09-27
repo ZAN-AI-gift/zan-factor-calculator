@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#1A1A2E">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>ZAN FACTOR — U-100 Calculator</title>
+<style>
+:root{--navy:#1A1A2E;--gold:#C9A96E;--cream:#F5F1E8;--ink:#232333;--muted:#777482;--white:#fff;}
+*{box-sizing:border-box} body{margin:0;background:var(--cream);font-family:Arial,sans-serif;color:var(--ink)}
+.wrap{max-width:720px;margin:auto;padding:22px 16px 48px}
+.brand{background:var(--navy);color:white;border-radius:24px;padding:24px 22px;margin-bottom:16px}
+.brand small{color:var(--gold);font-weight:700;letter-spacing:.14em} h1{margin:8px 0 4px;font-size:28px}
+.brand p{margin:0;color:#ddd8cf;line-height:1.45}
+.card{background:white;border-radius:22px;padding:20px;box-shadow:0 8px 30px rgba(26,26,46,.08);margin:14px 0}
+label{display:block;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+select,input{width:100%;font-size:18px;padding:14px;border:1px solid #ddd8d0;border-radius:14px;background:#fff;color:var(--ink)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.info{background:#f8f6f0;border-radius:14px;padding:13px} .info b{display:block;font-size:18px;margin-top:4px}
+.big{text-align:center;border:2px solid var(--gold);background:#fffdf8}
+.big .num{font-size:54px;font-weight:800;color:var(--navy);line-height:1;margin:8px 0}
+.big .unit{font-size:20px;font-weight:700} .big .sub{color:var(--muted);margin-top:8px;line-height:1.45}
+.tabs{display:flex;gap:8px;margin-bottom:14px} .tabs button{flex:1;padding:12px;border-radius:12px;border:1px solid #ddd8d0;background:#fff;font-weight:700}
+.tabs button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.note{font-size:13px;line-height:1.5;color:var(--muted)} .warn{border-left:4px solid var(--gold);padding-left:12px}
+.hidden{display:none}
+@media(max-width:520px){.grid{grid-template-columns:1fr} h1{font-size:24px} .big .num{font-size:48px}}
+.install{display:flex;gap:10px;align-items:center;justify-content:space-between;background:#fff8e8;border:1px solid #ead9ad;border-radius:16px;padding:12px 14px;margin:14px 0;font-size:13px;line-height:1.4}
+.helpbtn{border:0;background:var(--gold);color:var(--navy);font-weight:800;padding:11px 14px;border-radius:12px;white-space:nowrap;cursor:pointer}
+.steps{display:grid;gap:10px;margin-top:12px}
+.step{display:grid;grid-template-columns:36px 1fr;gap:10px;align-items:start;background:#f8f6f0;border-radius:14px;padding:12px}
+.stepn{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--navy);color:white;font-weight:800}
+.step b{display:block;margin-bottom:4px}
+.rule{background:var(--navy);color:white;border-radius:16px;padding:15px;margin-top:14px;text-align:center;line-height:1.55}
+.rule strong{color:var(--gold);font-size:16px}
+details{margin-top:12px} summary{cursor:pointer;font-weight:800;color:var(--navy)}
+</style>
+</head>
+<body><div class="wrap">
+<section class="brand"><small>ZAN FACTOR</small><h1>Калькулятор U-100</h1>
+<p>Рабочий формат ZAN FACTOR: единицы U-100 — крупно, количество вещества — рядом для контроля.</p></section>
+<div class="install"><span><b>Открывайте по одной ссылке на телефоне.</b><br>Safari / Chrome · ничего устанавливать не нужно.</span><button class="helpbtn" onclick="document.getElementById('help').scrollIntoView({behavior:'smooth'})">Как пользоваться?</button></div>
+<section class="card">
+<label>ШАГ 1 · Выберите препарат и концентрацию</label>
+<select id="product"><option value="0" data-mg="5" data-ml="2">CALM ACTIVE — KPV · 5 mg</option>
+<option value="1" data-mg="10" data-ml="2">CALM PRO — KPV · 10 mg</option>
+<option value="2" data-mg="5" data-ml="2">REPAIR PRIME — BPC-157 · 5 mg</option>
+<option value="3" data-mg="10" data-ml="2">RECOVER PRIME — TB-500 · 10 mg</option>
+<option value="4" data-mg="10" data-ml="2">TELO PRIME — Epitalon · 10 mg</option>
+<option value="5" data-mg="10" data-ml="2">MITO ELITE — SS-31 · 10 mg</option>
+<option value="6" data-mg="10" data-ml="2">CALM MIND — Selank · 10 mg</option>
+<option value="7" data-mg="15" data-ml="2">SLEEP PRIME — DSIP · 15 mg</option>
+<option value="8" data-mg="10" data-ml="2">FOCUS PRIME — Semax · 10 mg</option>
+<option value="9" data-mg="20" data-ml="2">COPPER BOOST · 20 mg</option>
+<option value="10" data-mg="50" data-ml="2">COPPER BOOST · 50 mg</option>
+<option value="11" data-mg="70" data-ml="2">GLOW PRIME · 70 mg</option>
+<option value="12" data-mg="80" data-ml="2">KLOW BLEND · 80 mg</option>
+<option value="13" data-mg="10" data-ml="2">REGEN PRIME · 10 mg</option>
+<option value="14" data-mg="10" data-ml="2">MITO PRIME — MOTS-C · 10 mg</option>
+<option value="15" data-mg="40" data-ml="2">MITO PRIME — MOTS-C · 40 mg</option>
+<option value="16" data-mg="10" data-ml="2">META PRIME — 5-Amino-1MQ · 10 mg</option>
+<option value="17" data-mg="40" data-ml="2">META PRIME — 5-Amino-1MQ · 40 mg</option>
+<option value="18" data-mg="5" data-ml="2">TRIM LITE — Retatrutide · 5 mg</option>
+<option value="19" data-mg="10" data-ml="2">TRIM PRO — Retatrutide · 10 mg</option>
+<option value="20" data-mg="20" data-ml="2">TRIM PRO+ — Retatrutide · 20 mg</option>
+<option value="21" data-mg="100" data-ml="2">ENERGY LIFT — NAD+ · 100 mg</option></select>
+<div class="grid">
+<div class="info"><span>Во флаконе</span><b id="vial">5 mg</b></div>
+<div class="info"><span>Разведение BAC</span><b><span id="bacLabel">2</span> ml</b></div>
+</div>
+<div style="margin-top:14px"><label>Если развели другим объёмом — измените BAC, ml</label><input id="bac" type="number" value="2" min="0.1" step="0.1"></div>
+</section>
+<section class="card">
+<div class="tabs"><button id="tabDose" class="on">ПРОТОКОЛ → U-100</button><button id="tabUnits">ПРОВЕРИТЬ ЕДИНИЦЫ</button></div>
+<div id="doseMode"><label>ШАГ 2 · Введите количество вещества из протокола</label><div class="grid"><input id="dose" type="number" value="500" min="0" step="1"><select id="doseUnit"><option value="mcg">мкг</option><option value="mg">mg</option></select></div></div>
+<div id="unitsMode" class="hidden"><label>ШАГ 2 · Введите количество единиц U-100</label><input id="units" type="number" value="10" min="0" max="100" step="1"></div>
+</section>
+<section class="card big"><div id="resultLabel">НАБРАТЬ В U-100</div><div class="num" id="result">20</div><div class="unit" id="resultUnit">ЕДИНИЦ</div><div class="sub" id="detail"></div></section>
+<section class="card"><div class="grid">
+<div class="info"><span>Концентрация</span><b id="conc">2.5 mg/ml</b></div><div class="info"><span>1 единица U-100</span><b id="perUnit">25 мкг</b></div><div class="info"><span>Всего во флаконе</span><b id="totalUnits">200 ед.</b></div><div class="info"><span>Объём 1 ед.</span><b>0.01 ml</b></div>
+</div></section>
+<section class="card"><label>СТАНДАРТ ЗАПИСИ ZAN FACTOR</label><div class="rule"><strong>10 ед. U-100 (= 500 мкг)</strong><br>флакон 10 mg &nbsp;•&nbsp; BAC 2 ml</div><p class="note">В протоколах рабочие единицы U-100 пишем первыми и крупно. Количество вещества в мкг/mg сохраняем в скобках как контроль. Концентрацию флакона и фактическое разведение указываем обязательно.</p></section>
+<section class="card" id="help"><label>ИНСТРУКЦИЯ · 3 ШАГА</label><div class="steps">
+<div class="step"><div class="stepn">1</div><div><b>Выберите препарат.</b>Проверьте название и количество mg на этикетке флакона.</div></div>
+<div class="step"><div class="stepn">2</div><div><b>Проверьте разведение BAC.</b>Значение в калькуляторе нужно сверить с фактическим объёмом разведения. Если добавили другой объём — укажите именно его.</div></div>
+<div class="step"><div class="stepn">3</div><div><b>Введите количество из протокола.</b>Калькулятор крупно покажет рабочее количество единиц U-100, а рядом оставит количество вещества для контроля.</div></div>
+</div><div class="rule"><strong>ТОЛЬКО U-100</strong><br>100 ед. = 1 ml &nbsp;•&nbsp; 10 ед. = 0,1 ml &nbsp;•&nbsp; 1 ед. = 0,01 ml</div>
+<details><summary>Как проверить расчёт?</summary><p class="note">Под большим результатом смотрите контрольные данные: концентрацию после разведения и количество вещества в 1 единице U-100. Если данные флакона или фактический объём BAC отличаются — исправьте их до использования результата.</p></details>
+<details><summary>Что делает режим «ПРОВЕРИТЬ ЕДИНИЦЫ»?</summary><p class="note">Он нужен для обратной проверки: вводите количество набранных единиц U-100, а калькулятор показывает, какое количество вещества этому соответствует при выбранной концентрации и разведении.</p></details></section>
+<p class="note warn"><b>Важно:</b> калькулятор не выбирает медицинскую дозу и не является назначением. Он переводит уже заданное в протоколе количество вещества в рабочие единицы U-100 и позволяет проверить обратный пересчёт. Перед использованием сверяйте фактическую фасовку на этикетке флакона и объём разведения.</p>
+</div>
+<script>
+const product=document.getElementById('product'), bac=document.getElementById('bac');
+const dose=document.getElementById('dose'), doseUnit=document.getElementById('doseUnit'), units=document.getElementById('units');
+let mode='dose';
+function fmt(x,d=2){ if(!isFinite(x)) return '—'; return Number(x.toFixed(d)).toString().replace('.',','); }
+function selected(){ const o=product.options[product.selectedIndex]; return {mg:+o.dataset.mg, ml:+bac.value||0}; }
+function calc(){
+ const p=selected(); const c=p.ml>0?p.mg/p.ml:0; const perUnitMcg=c*1000/100;
+ document.getElementById('vial').textContent=fmt(p.mg,2)+' mg';
+ document.getElementById('bacLabel').textContent=fmt(p.ml,2);
+ document.getElementById('conc').textContent=fmt(c,3)+' mg/ml';
+ document.getElementById('perUnit').textContent=fmt(perUnitMcg,2)+' мкг';
+ document.getElementById('totalUnits').textContent=fmt(p.ml*100,1)+' ед.';
+ if(mode==='dose'){
+   let mcg=(+dose.value||0)*(doseUnit.value==='mg'?1000:1);
+   let u=perUnitMcg>0?mcg/perUnitMcg:0;
+   document.getElementById('resultLabel').textContent='НАБРАТЬ В U-100';
+   document.getElementById('result').textContent=fmt(u,2);
+   document.getElementById('resultUnit').textContent='ЕДИНИЦ';
+   document.getElementById('detail').textContent='= '+fmt(mcg,2)+' мкг · флакон '+fmt(p.mg,2)+' mg · BAC '+fmt(p.ml,2)+' ml';
+ } else {
+   let u=+units.value||0, mcg=u*perUnitMcg;
+   document.getElementById('resultLabel').textContent='В '+fmt(u,2)+' ЕД. U-100';
+   document.getElementById('result').textContent=fmt(mcg,2);
+   document.getElementById('resultUnit').textContent='мкг';
+   document.getElementById('detail').textContent='= '+fmt(mcg/1000,4)+' mg · объём '+fmt(u/100,3)+' ml';
+ }
+}
+product.addEventListener('change',()=>{ bac.value=product.options[product.selectedIndex].dataset.ml; calc(); });
+[bac,dose,doseUnit,units].forEach(x=>x.addEventListener('input',calc));
+document.getElementById('tabDose').onclick=()=>{mode='dose';document.getElementById('doseMode').classList.remove('hidden');document.getElementById('unitsMode').classList.add('hidden');document.getElementById('tabDose').classList.add('on');document.getElementById('tabUnits').classList.remove('on');calc()};
+document.getElementById('tabUnits').onclick=()=>{mode='units';document.getElementById('unitsMode').classList.remove('hidden');document.getElementById('doseMode').classList.add('hidden');document.getElementById('tabUnits').classList.add('on');document.getElementById('tabDose').classList.remove('on');calc()};
+calc();
+</script></body></html>
