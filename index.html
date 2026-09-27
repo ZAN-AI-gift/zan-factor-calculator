@@ -44,28 +44,8 @@ details{margin-top:12px} summary{cursor:pointer;font-weight:800;color:var(--navy
 <div class="install"><span><b>Открывайте по одной ссылке на телефоне.</b><br>Safari / Chrome · ничего устанавливать не нужно.</span><button class="helpbtn" onclick="document.getElementById('help').scrollIntoView({behavior:'smooth'})">Как пользоваться?</button></div>
 <section class="card">
 <label>ШАГ 1 · Выберите препарат и концентрацию</label>
-<select id="product"><option value="0" data-mg="5" data-ml="2">CALM ACTIVE — KPV · 5 mg</option>
-<option value="1" data-mg="10" data-ml="2">CALM PRO — KPV · 10 mg</option>
-<option value="2" data-mg="5" data-ml="2">REPAIR PRIME — BPC-157 · 5 mg</option>
-<option value="3" data-mg="10" data-ml="2">RECOVER PRIME — TB-500 · 10 mg</option>
-<option value="4" data-mg="10" data-ml="2">TELO PRIME — Epitalon · 10 mg</option>
-<option value="5" data-mg="10" data-ml="2">MITO ELITE — SS-31 · 10 mg</option>
-<option value="6" data-mg="10" data-ml="2">CALM MIND — Selank · 10 mg</option>
-<option value="7" data-mg="15" data-ml="2">SLEEP PRIME — DSIP · 15 mg</option>
-<option value="8" data-mg="10" data-ml="2">FOCUS PRIME — Semax · 10 mg</option>
-<option value="9" data-mg="20" data-ml="2">COPPER BOOST · 20 mg</option>
-<option value="10" data-mg="50" data-ml="2">COPPER BOOST · 50 mg</option>
-<option value="11" data-mg="70" data-ml="2">GLOW PRIME · 70 mg</option>
-<option value="12" data-mg="80" data-ml="2">KLOW BLEND · 80 mg</option>
-<option value="13" data-mg="10" data-ml="2">REGEN PRIME · 10 mg</option>
-<option value="14" data-mg="10" data-ml="2">MITO PRIME — MOTS-C · 10 mg</option>
-<option value="15" data-mg="40" data-ml="2">MITO PRIME — MOTS-C · 40 mg</option>
-<option value="16" data-mg="10" data-ml="2">META PRIME — 5-Amino-1MQ · 10 mg</option>
-<option value="17" data-mg="40" data-ml="2">META PRIME — 5-Amino-1MQ · 40 mg</option>
-<option value="18" data-mg="5" data-ml="2">TRIM LITE — Retatrutide · 5 mg</option>
-<option value="19" data-mg="10" data-ml="2">TRIM PRO — Retatrutide · 10 mg</option>
-<option value="20" data-mg="20" data-ml="2">TRIM PRO+ — Retatrutide · 20 mg</option>
-<option value="21" data-mg="100" data-ml="2">ENERGY LIFT — NAD+ · 100 mg</option></select>
+<select id="product"></select>
+<div class="note" id="productMeta" style="margin-top:8px"></div>
 <div class="grid">
 <div class="info"><span>Во флаконе</span><b id="vial">5 mg</b></div>
 <div class="info"><span>Разведение BAC</span><b><span id="bacLabel">2</span> ml</b></div>
@@ -92,11 +72,55 @@ details{margin-top:12px} summary{cursor:pointer;font-weight:800;color:var(--navy
 <p class="note warn"><b>Важно:</b> калькулятор не выбирает медицинскую дозу и не является назначением. Он переводит уже заданное в протоколе количество вещества в рабочие единицы U-100 и позволяет проверить обратный пересчёт. Перед использованием сверяйте фактическую фасовку на этикетке флакона и объём разведения.</p>
 </div>
 <script>
+const PRODUCTS = [
+ {brand:"TRIM LITE",active:"Retatrutide",mg:5},
+ {brand:"TRIM PRO",active:"Retatrutide",mg:10},
+ {brand:"TRIM PRO+",active:"Retatrutide",mg:20},
+ {brand:"TELO PRIME",active:"Epitalon",mg:10},
+ {brand:"GH PRIME",active:"Ipamorelin",mg:10},
+ {brand:"MITO PRIME",active:"MOTS-C",mg:10},
+ {brand:"MITO PRIME",active:"MOTS-C",mg:40},
+ {brand:"MITO ELITE",active:"SS-31",mg:10},
+ {brand:"CALM ACTIVE",active:"KPV",mg:5,defaultMl:2,verifiedDilution:true},
+ {brand:"CALM PRO",active:"KPV",mg:10,defaultMl:2,verifiedDilution:true},
+ {brand:"REPAIR PRIME",active:"BPC-157",mg:5},
+ {brand:"RECOVER PRIME",active:"TB-500",mg:10},
+ {brand:"CALM MIND",active:"Selank",mg:10},
+ {brand:"FOCUS PRIME",active:"Semax",mg:10},
+ {brand:"SLEEP PRIME",active:"DSIP",mg:15},
+ {brand:"META PRIME",active:"5-Amino-1MQ",mg:10},
+ {brand:"META PRIME",active:"5-Amino-1MQ",mg:40},
+ {brand:"COPPER BOOST",active:"GHK-Cu",mg:20},
+ {brand:"COPPER BOOST",active:"GHK-Cu",mg:50},
+ {brand:"ENERGY LIFT",active:"NAD+",mg:100},
+ {brand:"GLOW PRIME",active:"GHK-Cu + BPC-157 + TB-500",mg:70,blend:true},
+ {brand:"KLOW BLEND",active:"Peptide blend",mg:80,blend:true},
+ {brand:"REGEN PRIME",active:"состав уточняется",mg:5,blend:true,disabled:true},
+ {brand:"CELL RENEW FOX",active:"Peptide complex",mg:10,blend:true,disabled:true}
+];
 const product=document.getElementById('product'), bac=document.getElementById('bac');
 const dose=document.getElementById('dose'), doseUnit=document.getElementById('doseUnit'), units=document.getElementById('units');
 let mode='dose';
+function renderProducts(){
+ product.innerHTML='';
+ PRODUCTS.forEach((p,i)=>{
+   const o=document.createElement('option');
+   o.value=i; o.textContent=p.brand+' — '+p.active+' · '+p.mg+' mg'+(p.disabled?' · НЕ ДЛЯ РАСЧЁТА':'');
+   o.disabled=!!p.disabled; product.appendChild(o);
+ });
+ product.value='8';
+ syncProduct();
+}
+function currentProduct(){ return PRODUCTS[+product.value] || PRODUCTS[0]; }
+function syncProduct(){
+ const p=currentProduct();
+ bac.value=p.verifiedDilution ? p.defaultMl : 2;
+ const meta=document.getElementById('productMeta');
+ meta.textContent=p.verifiedDilution ? 'Разведение 2 ml подтверждено в протоколе ZAN FACTOR.' : 'Проверьте фактический объём BAC: 2 ml здесь только стартовое значение калькулятора.';
+ calc();
+}
 function fmt(x,d=2){ if(!isFinite(x)) return '—'; return Number(x.toFixed(d)).toString().replace('.',','); }
-function selected(){ const o=product.options[product.selectedIndex]; return {mg:+o.dataset.mg, ml:+bac.value||0}; }
+function selected(){ const p=currentProduct(); return {mg:p.mg, ml:+bac.value||0}; }
 function calc(){
  const p=selected(); const c=p.ml>0?p.mg/p.ml:0; const perUnitMcg=c*1000/100;
  document.getElementById('vial').textContent=fmt(p.mg,2)+' mg';
@@ -119,9 +143,9 @@ function calc(){
    document.getElementById('detail').textContent='= '+fmt(mcg/1000,4)+' mg · объём '+fmt(u/100,3)+' ml';
  }
 }
-product.addEventListener('change',()=>{ bac.value=product.options[product.selectedIndex].dataset.ml; calc(); });
+product.addEventListener('change',syncProduct);
 [bac,dose,doseUnit,units].forEach(x=>x.addEventListener('input',calc));
 document.getElementById('tabDose').onclick=()=>{mode='dose';document.getElementById('doseMode').classList.remove('hidden');document.getElementById('unitsMode').classList.add('hidden');document.getElementById('tabDose').classList.add('on');document.getElementById('tabUnits').classList.remove('on');calc()};
 document.getElementById('tabUnits').onclick=()=>{mode='units';document.getElementById('unitsMode').classList.remove('hidden');document.getElementById('doseMode').classList.add('hidden');document.getElementById('tabUnits').classList.add('on');document.getElementById('tabDose').classList.remove('on');calc()};
-calc();
+renderProducts();
 </script></body></html>
